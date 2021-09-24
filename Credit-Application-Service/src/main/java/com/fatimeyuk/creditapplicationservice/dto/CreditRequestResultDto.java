@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreditRequestDto {
+public class CreditRequestResultDto {
 
     private double creditLimit;
     private String nationalId;

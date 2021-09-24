@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerMiniDto {
+public class CustomerRequestDto {
     private String nationalId;
     private double monthlyIncome;
 
