@@ -1,15 +1,12 @@
 package com.fatimeyuk.customerservice.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
@@ -17,7 +14,7 @@ import java.util.Date;
 @Entity
 public class ErrorExceptionLogger extends AbstractBaseEntity{
 
-    private Integer status;
+    private Integer statusCode;
     private String errorMessage;
-    private Date exceptionDate;
+    private LocalDate exceptionDate;
 }

@@ -1,4 +1,4 @@
-package com.fatimeyuk.creditapplicationservice.entity.dto;
+package com.fatimeyuk.creditapplicationservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

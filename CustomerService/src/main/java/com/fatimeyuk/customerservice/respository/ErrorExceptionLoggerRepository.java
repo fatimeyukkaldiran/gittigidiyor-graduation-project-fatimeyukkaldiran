@@ -1,21 +1,18 @@
-package com.fatimeyuk.customerservice.repository;
+package com.fatimeyuk.customerservice.respository;
 
 
 import com.fatimeyuk.customerservice.entity.ErrorExceptionLogger;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import org.springframework.stereotype.Repository;
 
-
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-    @Repository
-    public interface ErrorExceptionLoggerRepository extends JpaRepository<ErrorExceptionLogger, Long> {
-        @Query(value = "SELECT l FROM ErrorExceptionLogger l where l.status = ?1")
-        List<ErrorExceptionLogger> getAllByStatus(int status);
+@Repository
+public interface ErrorExceptionLoggerRepository extends JpaRepository<ErrorExceptionLogger, Long> {
+    List<ErrorExceptionLogger> findByExceptionDate(LocalDate exceptionThrowDate);
 
-        List<ErrorExceptionLogger> findByExceptionDate(Date date);
-    }
+    List<ErrorExceptionLogger> findByStatusCode(int statusCode);
+
+}
 

@@ -1,20 +1,32 @@
-package com.fatimeyuk.creditapplicationservice;
+package com.fatimeyuk.creditapplicationservice.service;
 
 
 import com.fatimeyuk.creditapplicationservice.dto.CreditRequestResultDto;
 import com.fatimeyuk.creditapplicationservice.dto.CustomerRequestDto;
 import com.fatimeyuk.creditapplicationservice.entity.CreditRequestResult;
 import com.fatimeyuk.creditapplicationservice.entity.enums.CreditResult;
+import com.fatimeyuk.creditapplicationservice.mappers.CreditRequestResultMapper;
 import com.fatimeyuk.creditapplicationservice.repository.CreditAppRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CreditAppService {
 
     private final CreditAppRepository creditRepository;
+    private final CreditRequestResultMapper creditRequestResultMapper;
 
+    public List<CreditRequestResultDto> getAllCreditRequestResult(String nationalId){
+
+        return creditRepository.findAllByNationalId(nationalId)
+                .stream()
+                .map(creditRequestResultMapper::mapFromCreditRequestToCreditRequestDto)
+                .collect(Collectors.toList());
+    }
 
     public CreditRequestResultDto save(CreditRequestResultDto requestDto) {
         CreditRequestResult creditRequest = new CreditRequestResult();

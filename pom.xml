@@ -15,7 +15,7 @@
     </properties>
 
     <modules>
-        <module>Credit-Score_Service</module>
+        <module>Credit-Application-Service</module>
         <module>Customer-Service</module>
 
 

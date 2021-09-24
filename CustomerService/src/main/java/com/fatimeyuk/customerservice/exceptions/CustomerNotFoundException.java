@@ -1,4 +1,4 @@
-package dev.patika.patika0401.exceptions;
+package com.fatimeyuk.customerservice.exceptions;
 
 public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException(String msg){

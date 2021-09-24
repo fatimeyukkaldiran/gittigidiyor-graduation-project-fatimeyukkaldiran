@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class CreditRequest extends AbstractBaseEntity{
+public class CreditRequestResult extends AbstractBaseEntity{
 
     private double creditLimit;
     private String nationalId;

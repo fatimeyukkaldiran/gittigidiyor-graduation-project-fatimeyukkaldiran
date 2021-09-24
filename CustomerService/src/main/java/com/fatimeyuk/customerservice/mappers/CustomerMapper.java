@@ -5,9 +5,10 @@ import com.fatimeyuk.customerservice.entity.Customer;
 import org.mapstruct.Mapper;
 
 
-
 @Mapper
 public interface CustomerMapper {
     Customer mapFromCustomerDtoToCustomer(CustomerDto customerDto);
     CustomerDto mapFromCustomerToCustomerDto(Customer customer);
 }
+
+

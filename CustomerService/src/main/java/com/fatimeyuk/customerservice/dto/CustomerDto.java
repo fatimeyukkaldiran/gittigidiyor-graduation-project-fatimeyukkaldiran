@@ -4,8 +4,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
@@ -29,9 +31,10 @@ public class CustomerDto {
 
     @ApiModelProperty(example = "5316523145")
     @NotBlank(message = "Phone number is mandatory")
+    //@NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Pattern(regexp="(^$|[0-9]{10})", message = "Phone number just includes numbers")
     private String phoneNumber;
 
     @ApiModelProperty(example = "5342.52")
-    @NotBlank(message = "Monthly income is mandatory")
     private double monthlyIncome;
 }

@@ -1,4 +1,4 @@
-package com.fatimeyuk.creditapplicationservice.entity.dto;
+package com.fatimeyuk.creditapplicationservice.dto;
 
 import com.fatimeyuk.creditapplicationservice.entity.enums.CreditResult;
 import lombok.AllArgsConstructor;

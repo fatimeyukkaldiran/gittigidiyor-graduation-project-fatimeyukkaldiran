@@ -1,4 +1,4 @@
-package com.fatimeyuk.creditapplicationservice.enums;
+package com.fatimeyuk.creditapplicationservice.entity.enums;
 
 public enum CreditResult {
     CONFIRM, REJECTION;

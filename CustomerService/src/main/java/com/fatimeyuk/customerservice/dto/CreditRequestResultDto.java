@@ -1,6 +1,6 @@
-package com.fatimeyuk.creditapplicationservice.entity.dto;
+package com.fatimeyuk.customerservice.dto;
 
-import com.fatimeyuk.creditapplicationservice.entity.enums.CreditResult;
+import com.fatimeyuk.customerservice.entity.enums.CreditResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
