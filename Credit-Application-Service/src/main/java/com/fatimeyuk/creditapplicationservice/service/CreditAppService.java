@@ -8,7 +8,10 @@ import com.fatimeyuk.creditapplicationservice.entity.enums.CreditResult;
 import com.fatimeyuk.creditapplicationservice.mappers.CreditRequestResultMapper;
 import com.fatimeyuk.creditapplicationservice.repository.CreditAppRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import springfox.documentation.service.LoginEndpoint;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,11 +19,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CreditAppService {
-
+    Logger log = LoggerFactory.getLogger(LoginEndpoint.class);
     private final CreditAppRepository creditRepository;
     private final CreditRequestResultMapper creditRequestResultMapper;
 
-    public List<CreditRequestResultDto> getAllCreditRequestResult(String nationalId){
+    public List<CreditRequestResultDto> getAllCreditRequestResult(String nationalId) {
 
         return creditRepository.findAllByNationalId(nationalId)
                 .stream()
@@ -28,7 +31,7 @@ public class CreditAppService {
                 .collect(Collectors.toList());
     }
 
-    public CreditRequestResultDto save(CreditRequestResultDto requestDto) {
+    public CreditRequestResultDto saveCreditRequestResult(CreditRequestResultDto requestDto) {
         CreditRequestResult creditRequest = new CreditRequestResult();
 
         creditRequest.setCreditLimit(requestDto.getCreditLimit());
@@ -36,6 +39,9 @@ public class CreditAppService {
         creditRequest.setNationalId(requestDto.getNationalId());
 
         CreditRequestResult request = creditRepository.save(creditRequest);
+
+
+
         return new CreditRequestResultDto(request.getCreditLimit(), request.getNationalId(), request.getCreditResult());
     }
 
@@ -70,7 +76,7 @@ public class CreditAppService {
 
 
         }
-        return save(requestDto);
+        return saveCreditRequestResult(requestDto);
     }
 
     public int getCreditScore(String nationalId) {
@@ -94,4 +100,7 @@ public class CreditAppService {
         }
         return score;
     }
+
+
+
 }

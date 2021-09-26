@@ -2,6 +2,7 @@ package com.fatimeyuk.customerservice.exceptions;
 
 import com.fatimeyuk.customerservice.entity.ErrorExceptionLogger;
 import com.fatimeyuk.customerservice.service.ErrorExceptionLoggerService;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,11 +61,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
-    public ErrorExceptionLogger handleException(HttpMessageNotReadableException exc){
-        ErrorExceptionLogger response = getErrorResponse(HttpStatus.BAD_REQUEST, exc.getMessage());
-        return response;
+    public String handleException(HttpMessageNotReadableException exc){
+        return "You input miss knowledge";
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
@@ -81,6 +81,10 @@ public class GlobalExceptionHandler {
         ErrorExceptionLogger response = getErrorResponse(HttpStatus.NOT_ACCEPTABLE, exc.getMessage());
         return response;
     }
+
+
+
+
     private ErrorExceptionLogger getErrorResponse(HttpStatus httpStatus,String message) {
         ErrorExceptionLogger response = new ErrorExceptionLogger();
         response.setStatusCode(httpStatus.value());

@@ -29,4 +29,5 @@ public class CreditAppController {
         return new ResponseEntity<>(creditService.getAllCreditRequestResult(nationalId), HttpStatus.OK);
     }
 
+
 }
