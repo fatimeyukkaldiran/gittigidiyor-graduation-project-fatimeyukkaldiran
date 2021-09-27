@@ -1,11 +1,8 @@
 package com.fatimeyuk.customerservice.controller;
 
-import com.fatimeyuk.customerservice.dto.CreditRequestResultDto;
 import com.fatimeyuk.customerservice.dto.CustomerDto;
-import com.fatimeyuk.customerservice.dto.CustomerRequestDto;
 import com.fatimeyuk.customerservice.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,39 +23,47 @@ public class CustomerController {
 
     Logger log = LoggerFactory.getLogger(LoginEndpoint.class);
 
-    private final String creditUrl = "http://localhost:8081/creditApp/get-credit-result";
     private final CustomerService customerService;
-    private final RestTemplate restTemplate;
+
 
     @PostMapping("/save")
     public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
-       log.info("SAVE CUSTOMER");
+       log.info("Send request to create a new customer..");
         Optional<CustomerDto> result = customerService.createCustomer(customerDto);
+        log.info("Customer was created successfully..");
         return new ResponseEntity<>(result.get(), HttpStatus.OK);
 
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-        log.info("GET ALL CUSTOMERS");
+        log.info("Send request to get all customers.. ");
         List<CustomerDto> customerDto = customerService.getCustomers();
+
         return new ResponseEntity<>(customerDto, HttpStatus.OK);
 
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("UPDATE CUSTOMER");
+      log.info("Send request to update exist customer..");
+
         Optional<?> result = customerService.updateCustomer(customerDto);
+
+        log.info("Customer was updated successfully..");
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{nationalId}")
     public ResponseEntity<?> deleteCustomer(@PathVariable String nationalId) {
+        log.info("Send request to delete a customer..");
+
         customerService.deleteCustomerByNationalId(nationalId);
+        log.info("Customer was deleted successfully..");
 
         return new ResponseEntity<>("customer deleted ...", HttpStatus.OK);
+
     }
 
 
@@ -66,6 +71,8 @@ public class CustomerController {
     @GetMapping("getAllDesc")
     @ResponseBody
     public ResponseEntity<List<CustomerDto>> getAllSorted(){
+        log.info("Get all customers sort by desc");
+
         return new ResponseEntity<>(customerService.getAllSorted(), HttpStatus.OK);
     }
 

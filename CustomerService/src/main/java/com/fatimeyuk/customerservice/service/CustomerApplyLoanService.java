@@ -1,15 +1,14 @@
 package com.fatimeyuk.customerservice.service;
 
+import com.fatimeyuk.customerservice.dto.CreditRequestResultDto;
 import com.fatimeyuk.customerservice.dto.CustomerDto;
 import com.fatimeyuk.customerservice.dto.CustomerRequestDto;
 import com.fatimeyuk.customerservice.entity.Customer;
+import com.fatimeyuk.customerservice.entity.enums.CreditResult;
 import com.fatimeyuk.customerservice.exceptions.CustomerNotFoundException;
-import com.fatimeyuk.customerservice.exceptions.CustomerWithNationalIdIsAlreadyException;
-import com.fatimeyuk.customerservice.exceptions.CustomerWithPhoneNumberIsAlreadyException;
 import com.fatimeyuk.customerservice.mappers.CustomerMapper;
 import com.fatimeyuk.customerservice.respository.CustomerRepository;
 import com.fatimeyuk.customerservice.utils.ErrorMessageConstants;
-import com.fatimeyuk.customerservice.utils.validations.CustomerValidator;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +20,19 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class CustomerApplyLoanService {
 
-    private final CustomerRepository customerRepository;
-    private final CustomerMapper customerMapper;
+    private final String creditUrl = "http://localhost:8081/creditApp/get-credit-result";
     private final RestTemplate restTemplate;
 
-    Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
+    private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
+    private final CustomerService customerService;
 
-    private final String creditUrl = "http://localhost:8081/creditApp/get-credit-result";
-
+    Logger log = LoggerFactory.getLogger(CustomerApplyLoanService.class);
 
     @Transactional
     public CustomerRequestDto createCreditRequestByNewCustomer(CustomerDto customerDto) {
 
-        Customer customer = checkCustomer(customerDto);
+        Customer customer = customerService.checkCustomer(customerDto);
 
         CustomerDto dto = customerMapper.mapFromCustomerToCustomerDto(customerRepository.save(customer));
 
@@ -44,23 +43,6 @@ public class CustomerApplyLoanService {
         return customerRequestDto;
     }
 
-    private Customer checkCustomer(CustomerDto customerDto) {
-        return getCustomer(customerDto, customerRepository, customerMapper);
-    }
-
-    public static Customer getCustomer(CustomerDto customerDto, CustomerRepository customerRepository, CustomerMapper customerMapper) {
-        if (customerRepository.selectExistsNationalId(customerDto.getNationalId())) {
-            throw new CustomerWithNationalIdIsAlreadyException(ErrorMessageConstants.CUSTOMER_NATIONAL_ID_ALREADY_EXISTS);
-        }
-        if (customerRepository.selectExistsPhoneNumber(customerDto.getPhoneNumber()) > 0) {
-            throw new CustomerWithPhoneNumberIsAlreadyException(ErrorMessageConstants.CUSTOMER_PHONE_ALREADY_EXISTS);
-        }
-        CustomerValidator.validateNationalId(customerDto.getNationalId());
-
-        Customer customer = customerMapper.mapFromCustomerDtoToCustomer(customerDto);
-
-        return customer;
-    }
 
     @Transactional(readOnly = true)
     public CustomerRequestDto createCreditRequestByExistCustomer(String nationalId) {
@@ -70,16 +52,23 @@ public class CustomerApplyLoanService {
 
         CustomerDto customerDto = customerMapper.mapFromCustomerToCustomerDto(customer);
 
-
         CustomerRequestDto customerRequestDto = new CustomerRequestDto(customerDto.getNationalId(), customerDto.getMonthlyIncome());
+
         getSmsInfo(customerDto, customerRequestDto);
 
         return customerRequestDto;
     }
 
-    private void getSmsInfo(CustomerDto customerDto, CustomerRequestDto customerRequestDto) {
-        CustomerServiceImpl.getCreditRequest(customerDto, customerRequestDto, restTemplate, creditUrl, log);
+
+    public void getSmsInfo(CustomerDto customerDto, CustomerRequestDto customerRequestDto) {
+        CreditRequestResultDto result = restTemplate.postForObject(creditUrl, customerRequestDto, CreditRequestResultDto.class);
+
+        log.info("Credit result sent to phone number " + customerDto.getPhoneNumber());
+
+        log.info("Dear customer your loan application has been received. Your application's result:" +
+
+                (result.getCreditResult().equals(CreditResult.CONFIRM)? "confirm": "reject") +" .Your credit Limit: " +
+
+                (result.getCreditResult().equals(CreditResult.CONFIRM)? result.getCreditLimit(): "" ) );
     }
-
-
 }

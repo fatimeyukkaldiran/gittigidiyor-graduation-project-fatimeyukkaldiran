@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -20,12 +21,12 @@ public class CustomerDto {
 
     @ApiModelProperty(example = "25468952134")
     @NotBlank(message = "Identification number is mandatory")
-    @Pattern(regexp = "3[1-9]{1}[0-9]{9}[02468]{1}$")
+    @Pattern(regexp = "[1-9]{1}[0-9]{9}[02468]{1}$")
     private String nationalId;
 
     @ApiModelProperty(example = "Fatime")
     @NotBlank(message = "First Name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "First name must only include letters.")
+   // @Pattern(regexp = "^[a-zA-Z]*$", message = "First name must only include letters.")
     @Size(min=2, max=30)
     private String firstName;
 
@@ -41,5 +42,6 @@ public class CustomerDto {
     private String phoneNumber;
 
     @ApiModelProperty(example = "5342.52")
+    @Min(value = 0)
     private double monthlyIncome;
 }

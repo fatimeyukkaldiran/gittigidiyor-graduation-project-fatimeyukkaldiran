@@ -1,13 +1,17 @@
 package com.fatimeyuk.customerservice.exceptions;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fatimeyuk.customerservice.entity.ErrorExceptionLogger;
 import com.fatimeyuk.customerservice.service.ErrorExceptionLoggerService;
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,6 +64,14 @@ public class GlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler({JsonParseException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorExceptionLogger handleException(JsonParseException exc){
+        ErrorExceptionLogger response = getErrorResponse(HttpStatus.BAD_REQUEST, exc.getMessage());
+        return response;
+    }
+
     @ExceptionHandler({HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
@@ -74,6 +86,32 @@ public class GlobalExceptionHandler {
         ErrorExceptionLogger response = getErrorResponse(HttpStatus.METHOD_NOT_ALLOWED, exc.getMessage());
         return response;
     }
+
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class
+    })
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public ErrorExceptionLogger handleException(MethodArgumentNotValidException exc){
+        ErrorExceptionLogger response = getErrorResponse(HttpStatus.NOT_ACCEPTABLE, exc.getMessage());
+        return response;
+    }
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public ErrorExceptionLogger handleException(DataIntegrityViolationException exc){
+        ErrorExceptionLogger response = getErrorResponse(HttpStatus.NOT_ACCEPTABLE, exc.getMessage());
+        return response;
+    }
+
+    @ExceptionHandler({MissingPathVariableException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public ErrorExceptionLogger handleException(MissingPathVariableException exc){
+        ErrorExceptionLogger response = getErrorResponse(HttpStatus.NOT_ACCEPTABLE, exc.getMessage());
+        return response;
+    }
+
     @ExceptionHandler({DateFormatterWrongException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
