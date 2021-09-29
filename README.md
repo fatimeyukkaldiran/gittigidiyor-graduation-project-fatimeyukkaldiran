@@ -74,3 +74,7 @@ $ mvn spring-boot:run
 ### Swagger UI will be run on this url
 `http://localhost:${8080}/swagger-ui.html`
 
+---
+![odevpart1](C:\Users\pc\Desktop\graduation\gittigidiyor-graduation-project-fatimeyukkaldiran\swagger-http-requests\apply-loan.JPG)
+![odevpart2](C:\Users\pc\Desktop\graduation\gittigidiyor-graduation-project-fatimeyukkaldiran\swagger-http-requests\customer.JPG)
+![odevpart3](C:\Users\pc\Desktop\graduation\gittigidiyor-graduation-project-fatimeyukkaldiran\swagger-http-requests\error.JPG)
