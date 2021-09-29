@@ -21,7 +21,7 @@ public class CustomerDto {
 
     @ApiModelProperty(example = "25468952134")
     @NotBlank(message = "Identification number is mandatory")
-    @Pattern(regexp = "[1-9]{1}[0-9]{9}[02468]{1}$")
+    //@Pattern(regexp = "[1-9]{1}[0-9]{9}[02468]{1}$")
     private String nationalId;
 
     @ApiModelProperty(example = "Fatime")

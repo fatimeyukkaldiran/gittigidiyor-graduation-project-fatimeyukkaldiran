@@ -49,7 +49,7 @@ public class CustomerApplyLoanService {
 
         Customer customer = customerRepository.findCustomerByNationalId(nationalId)
                 .orElseThrow(() -> new CustomerNotFoundException(ErrorMessageConstants.CUSTOMER_NOT_FOUND));
-
+        log.warn("Customer could not found by national id: " + nationalId);
         CustomerDto customerDto = customerMapper.mapFromCustomerToCustomerDto(customer);
 
         CustomerRequestDto customerRequestDto = new CustomerRequestDto(customerDto.getNationalId(), customerDto.getMonthlyIncome());

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import springfox.documentation.service.LoginEndpoint;
 
 import javax.validation.Valid;
@@ -38,7 +37,7 @@ public class CustomerController {
     @GetMapping("/getAll")
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         log.info("Send request to get all customers.. ");
-        List<CustomerDto> customerDto = customerService.getCustomers();
+        List<CustomerDto> customerDto = customerService.getAllCustomers().get();
 
         return new ResponseEntity<>(customerDto, HttpStatus.OK);
 

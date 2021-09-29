@@ -39,16 +39,15 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public List<CustomerDto> getCustomers() {
-        return customerRepository.findAll()
-                .stream()
-                .map(customerMapper::mapFromCustomerToCustomerDto)
-                .collect(Collectors.toList());
+    public Optional<List<CustomerDto>> getAllCustomers() {
+        List<CustomerDto> customerDtoList = customerMapper.mapFromCustomerListToCustomerDtoList(customerRepository.findAll());
+        return Optional.of(customerDtoList);
+
     }
 
 
     @Transactional
-    public Optional<?> updateCustomer(CustomerDto customerDto) {
+    public Optional<CustomerDto> updateCustomer(CustomerDto customerDto) {
 
         Customer foundCustomer = customerRepository.findCustomerByNationalId(customerDto.getNationalId())
                 .orElseThrow(() -> new CustomerNotFoundException(ErrorMessageConstants.CUSTOMER_NOT_FOUND));
@@ -58,6 +57,7 @@ public class CustomerService {
         foundCustomer.setMonthlyIncome(customerDto.getMonthlyIncome());
         foundCustomer.setPhoneNumber(customerDto.getPhoneNumber());
 
+
         return Optional.of(customerMapper.mapFromCustomerToCustomerDto(customerRepository.save(foundCustomer)));
     }
 
@@ -65,17 +65,18 @@ public class CustomerService {
     @Transactional
     public void deleteCustomerByNationalId(String nationalId) {
 
-        customerRepository.deleteByNationalId(findCustomerByNationalId(nationalId));
+        customerRepository.deleteByNationalId(findCustomerByNationalId(nationalId).get());
     }
 
 
     @Transactional(readOnly = true)
-    protected String findCustomerByNationalId(String nationalId) {
+    public Optional<String> findCustomerByNationalId(String nationalId) {
         log.info("Start to find customer by national id..");
         Customer foundCustomer = customerRepository.findCustomerByNationalId(nationalId)
                 .orElseThrow(() -> new CustomerNotFoundException(ErrorMessageConstants.CUSTOMER_NOT_FOUND));
 
-        return foundCustomer.getNationalId();
+        CustomerDto customerDto = customerMapper.mapFromCustomerToCustomerDto(foundCustomer);
+        return Optional.of(customerDto.getNationalId());
     }
 
 
@@ -84,13 +85,15 @@ public class CustomerService {
 
         log.info("control customer by all requires");
 
-        if (customerRepository.selectExistsNationalId(customerDto.getNationalId())) {
+        if (customerRepository.doesNationalIdExist(customerDto.getNationalId())) {
             throw new CustomerWithNationalIdIsAlreadyException(ErrorMessageConstants.CUSTOMER_NATIONAL_ID_ALREADY_EXISTS);
         }
-        if (customerRepository.selectExistsPhoneNumber(customerDto.getPhoneNumber()) > 0) {
+        if (customerRepository.doesPhoneNumberExist(customerDto.getPhoneNumber())) {
             throw new CustomerWithPhoneNumberIsAlreadyException(ErrorMessageConstants.CUSTOMER_PHONE_ALREADY_EXISTS);
         }
         CustomerValidator.validateNationalId(customerDto.getNationalId());
+
+        log.warn(String.format("Customer national must be greater than 11 or finish not single number: ", customerDto.getNationalId()));
 
         Customer customer = customerMapper.mapFromCustomerDtoToCustomer(customerDto);
 
