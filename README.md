@@ -75,4 +75,7 @@ $ mvn spring-boot:run
 `http://localhost:${8080}/swagger-ui.html`
 
 ---
+![loan-requests](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/gittigidiyor-graduation-project-fatimeyukkaldiran/blob/main/swagger-http-requests/apply-loan.JPG)
+![customer-crud-requests](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/gittigidiyor-graduation-project-fatimeyukkaldiran/blob/main/swagger-http-requests/customer.JPG)
+![error-requests](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/gittigidiyor-graduation-project-fatimeyukkaldiran/blob/main/swagger-http-requests/error.JPG)
 
