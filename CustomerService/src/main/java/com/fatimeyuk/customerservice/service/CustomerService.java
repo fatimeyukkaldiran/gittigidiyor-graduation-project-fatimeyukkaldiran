@@ -64,8 +64,8 @@ public class CustomerService {
 
     @Transactional
     public void deleteCustomerByNationalId(String nationalId) {
-
-        customerRepository.deleteByNationalId(findCustomerByNationalId(nationalId).get());
+    String foundId = findCustomerByNationalId(nationalId).get();
+        customerRepository.deleteByNationalId(foundId);
     }
 
 

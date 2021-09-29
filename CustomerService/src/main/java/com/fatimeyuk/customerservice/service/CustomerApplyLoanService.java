@@ -38,7 +38,7 @@ public class CustomerApplyLoanService {
 
         CustomerRequestDto customerRequestDto = new CustomerRequestDto(dto.getNationalId(), dto.getMonthlyIncome());
 
-        getSmsInfo(customerDto, customerRequestDto);
+       getSmsInfo(customerDto, customerRequestDto);
 
         return customerRequestDto;
     }
@@ -49,6 +49,7 @@ public class CustomerApplyLoanService {
 
         Customer customer = customerRepository.findCustomerByNationalId(nationalId)
                 .orElseThrow(() -> new CustomerNotFoundException(ErrorMessageConstants.CUSTOMER_NOT_FOUND));
+
         log.warn("Customer could not found by national id: " + nationalId);
         CustomerDto customerDto = customerMapper.mapFromCustomerToCustomerDto(customer);
 
@@ -67,8 +68,8 @@ public class CustomerApplyLoanService {
 
         log.info("Dear customer your loan application has been received. Your application's result:" +
 
-                (result.getCreditResult().equals(CreditResult.CONFIRM)? "confirm": "reject") +" .Your credit Limit: " +
+                ((CreditResult.CONFIRM).equals(result.getCreditResult())? "confirm": "reject") +" .Your credit Limit: " +
 
-                (result.getCreditResult().equals(CreditResult.CONFIRM)? result.getCreditLimit(): "" ) );
+                ((CreditResult.CONFIRM).equals(result.getCreditResult())? result.getCreditLimit(): "" ) );
     }
 }

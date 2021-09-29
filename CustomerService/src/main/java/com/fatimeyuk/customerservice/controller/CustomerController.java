@@ -44,14 +44,14 @@ public class CustomerController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateCustomer(@Valid @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<CustomerDto> updateCustomer(@Valid @RequestBody CustomerDto customerDto) {
       log.info("Send request to update exist customer..");
 
-        Optional<?> result = customerService.updateCustomer(customerDto);
+        Optional<CustomerDto> result = customerService.updateCustomer(customerDto);
 
         log.info("Customer was updated successfully..");
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result.get(), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{nationalId}")
