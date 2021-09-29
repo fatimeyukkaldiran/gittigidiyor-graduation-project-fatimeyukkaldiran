@@ -75,6 +75,5 @@ $ mvn spring-boot:run
 `http://localhost:${8080}/swagger-ui.html`
 
 ---
-![odevpart1](swagger-http-requests\apply-loan.JPG)
-![odevpart2](swagger-http-requests\customer.JPG)
-![odevpart3](swagger-http-requests\error.JPG)
+![odevpart1](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/gittigidiyor-graduation-project-fatimeyukkaldiran/swagger-http-requests/apply-loan.JPG)
+
