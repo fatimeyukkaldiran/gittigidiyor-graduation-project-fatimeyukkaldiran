@@ -29,7 +29,7 @@ GET /customer/getByNationalId/{nationalId}" - applies for loan by existing custo
 GET /customer/{nationalId} - retrieves all loan application for a customer.
 ```
 
-JUnit test coverage is 100% as well as integration tests are available.
+JUnit test coverage is 100% 
 
 
 ### Tech Stack
